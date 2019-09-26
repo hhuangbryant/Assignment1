@@ -1,0 +1,156 @@
+---
+title: "Assignment 2"
+author: "Huiyi Huang"
+date: "2019/9/17"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+#1-#5
+```{r}
+setwd("C:/Users/student/Documents/Fall2019/")
+getwd()
+library(stringr)
+library(readxl)
+read_excel("C:/Users/student/Documents/Fall2019/c2015.xlsx")
+c2015=read_excel("C:/Users/student/Documents/Fall2019/c2015.xlsx")
+class(c2015)
+dim(c2015)
+set.seed(2019)
+x<- c2015[sample(1:dim(c2015)[1],1000,replace = FALSE),]
+summary(x)
+
+```
+```{r}
+#remove constant
+x$YEAR = NULL
+x$LONGITUD = NULL
+x$LATITUDE = NULL
+x$DAY = NULL
+x$MONTH = NULL
+x$HOUR = NULL
+x$VEH_NO = NULL
+x$PER_NO = NULL
+x$ROUTE = NULL
+x$DAY_WEEK = NULL
+x$MINUTE = NULL
+x$MOD_YEAR = NULL
+x$ST_CASE = NULL
+
+
+
+```
+
+
+
+#6
+```{r}
+colSums(is.na(x))
+```
+#7
+```{r}
+sum(x$STATE=='Unknown', na.rm = TRUE)
+sum(x$COUNTY=='Unknown', na.rm = TRUE)
+sum(x$SEX=='Unknown', na.rm = TRUE)
+sum(x$AGE=='Unknown', na.rm = TRUE)
+sum(x$PER_TYP=='Unknown', na.rm = TRUE)
+sum(x$INJ_SEV=='Unknown', na.rm = TRUE)
+sum(x$SEAT_POS=='Unknown', na.rm = TRUE)
+sum(x$DRINKING=='Unknown', na.rm = TRUE)
+sum(x$MAN_COLL=='Unknown', na.rm = TRUE)
+sum(x$OWNER=='Unknown', na.rm = TRUE)
+sum(x$TRAV_SP=='Unknown', na.rm = TRUE)
+sum(x$DEFORMED=='Unknown', na.rm = TRUE)
+sum(x$HARM_EV=='Unknown', na.rm = TRUE)
+sum(x$LGT_COND=='Unknown', na.rm = TRUE)
+sum(x$WEATHER=='Unknown', na.rm = TRUE)
+
+```
+
+
+#8
+```{r}
+table(x$SEX)
+x[x$SEX=='Unknown','SEX']='Female'
+x[x$SEX=='Not Rep','SEX']='Female'
+table(x$SEX)
+#Question 9 is at the end.
+
+```
+#10
+```{r}
+x$TRAV_SP= str_replace(x$TRAV_SP,' MPH','') 
+x$TRAV_SP<-as.numeric(as.character(x$TRAV_SP))
+x = x[!is.na(x$TRAV_SP),]
+mean(x$TRAV_SP)
+
+
+```
+
+#11
+
+```{r}
+mean(x$TRAV_SP[x$INJ_SEV=='No Apparent Injury (O)'])
+mean(x$TRAV_SP[!x$INJ_SEV=='No Apparent Injury (O)'])
+#People who have no injuries are having lower speed comparing to others who has injuries.
+
+```
+#12
+```{r}
+x = x[x$SEAT_POS=='Front Seat, Left Side',]
+mean(x$TRAV_SP[x$SEX=='Male'])>mean(x$TRAV_SP[x$SEX=='Female'])
+#Male drivers tend too drive faster than female drivers
+
+```
+#13
+```{r}
+mean(x$TRAV_SP[x$DRINKING=='Yes (Alcohol Involved)']) > mean(x$TRAV_SP[x$DRINKING=='No (Alcohol Not Involved)'])
+#or
+by(x$TRAV_SP, x$DRINKING, FUN = mean)
+#Drivers who drink alcohol tend to drive faster than drivers that don't drink alcohol.
+```
+#14
+```{r}
+#Hypothsis: Young drivers (16-25)tend to drive faster than adult drivers(25-35).
+mean(x$TRAV_SP[x$AGE<25]) > mean(x$TRAV_SP[x$AGE<35 &x$AGE>25])
+# Hypothesis proven true. Yong drivers are more aggressive drivers comparing to adult drivers.
+```
+
+
+#9
+```{r}
+#change"less than 1" to 0
+
+x[x$AGE=='Less than 1','AGE']=0
+```
+```{r}
+#change data type
+typeof(x$AGE)
+x$AGE<-as.numeric(as.character(x$AGE))
+typeof(x$AGE) 
+
+
+```
+
+
+```{r}
+#change missing value to avg
+
+y=mean(x$AGE, na.rm = 1)
+x[is.na(x$AGE),]=y
+x[x$AGE=='Unknown','AGE']=y
+
+
+```
+
+
+
+
+
+
+

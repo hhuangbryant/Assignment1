@@ -1,0 +1,220 @@
+---
+title: "Assignment1"
+author: "Huiyi Huang"
+date: "9/9/2019"
+output:
+  pdf_document: default
+  html_document: default
+editor_options:
+  chunk_output_type: inline
+---
+Part 1
+#1
+```{r}
+S<-c(1:2019)
+sum(S)
+
+sum(S^3)
+
+sum(S^S)
+
+sum(((-1)^S-1)*S^S)
+
+sum(1/(S^2))
+
+sum(1/S)
+
+sum(1/(S^3))
+
+sum(((-1)^S-1)*1/S)
+```
+#2
+```{r}
+x<-rnorm(1000,mean=10,sd=1)
+mean(x)
+sd(x)
+
+sum(x>10)
+hist(x)
+
+X<-rnorm(1000,mean=2,sd=1)
+prob=sum(X>1)/1000
+prob
+
+```
+#3
+```{r}
+x = sample(c(1:6) ,1000, replace = TRUE)
+mean(x)
+sd(x)
+sum(x==6)
+table(x)
+prop.table(table(x))
+hist(x)
+```
+#4
+```{r}
+X1<-sample(1:6,1000,replace=TRUE)
+X2<-sample(1:6,1000,replace=TRUE)
+X3<-sample(1:6,1000,replace=TRUE)
+z=sum(X1>X2+X3)
+z/1000
+
+y=sum(X1^2>X2^2+X3^2)
+y/1000
+```
+#5
+```{r}
+x=sample(c(0:1),3000,replace=TRUE)
+d=matrix(x,ncol=3)
+sum(rowSums(d)==0)/1000
+
+
+```
+#6
+```{r}
+x=sample(c(0,1),10000,replace=TRUE)
+d=matrix(x,ncol=10)
+sum(rowSums(d)==3)/1000
+```
+#7
+```{r}
+y=runif(100000,0,1)
+
+d=matrix(y,ncol =100)
+
+x=rowMeans(d)
+
+hist(x)
+
+
+
+
+```
+
+```{r}
+y=runif(1000000,0,1)
+
+d=matrix(y,ncol =1000)
+
+x=rowMeans(d)
+
+hist(x)
+```
+```{r}
+y=runif(10000000,0,1)
+
+d=matrix(y,ncol =10000)
+
+x=rowMeans(d)
+
+hist(x)
+```
+Part 2
+#7
+```{r}
+
+setwd("C:/Users/student/Documents/Fall2019/")
+
+Titanic<-read.csv(file= 'titanic.csv')
+str(Titanic)
+
+```
+#8
+```{r}
+
+#knitr::kable(Titanic)
+
+
+```
+
+#9
+```{r}
+
+sum(is.na(Titanic))
+colSums(is.na(Titanic))
+```
+#10 
+```{r}
+
+mean(Titanic$Age,na.rm=TRUE)
+```
+#11
+```{r}
+
+Titanic$Age[is.na(Titanic$Age)]<-mean(Titanic$Age,na.rm=TRUE)
+sum(is.na(Titanic$Age))
+```
+#12
+```{r}
+
+Titanic$Name = NULL
+Titanic$PassingerId = NULL
+Titanic$Ticket = NULL
+Titanic$Cabin = NULL
+```
+#13
+```{r}
+mean(Titanic$Age[Titanic$Sex =='female'])
+```
+#14
+```{r}
+median(Titanic$Fare[Titanic$Pclass=='1'])
+```
+
+#15
+```{r}
+median(Titanic$Fare[Titanic$Sex=="female" & Titanic$Pclass=='2' | Titanic$Pclass=='3'])
+```
+#16
+```{r}
+median(Titanic$Age[Titanic$Survived=="1" & Titanic$Sex == "female" & Titanic$Pclass=='2' | Titanic$Pclass=='1'])
+```
+#17
+```{r}
+mean(Titanic$Fare[Titanic$Sex == "female" & Titanic$Survived == "1" & Titanic$Age < 18])
+```
+#18
+```{r}
+mean(Titanic$Fare[Titanic$Sex == "female" & Titanic$Survived == "1" & Titanic$Age < 18 & Titanic$Pclass==1])
+mean(Titanic$Fare[Titanic$Sex == "female" & Titanic$Survived == "1" & Titanic$Age < 18 & Titanic$Pclass==2])
+mean(Titanic$Fare[Titanic$Sex == "female" & Titanic$Survived == "1" & Titanic$Age < 18 & Titanic$Pclass==3])
+```
+#19
+```{r}
+y=mean(Titanic$Fare)
+sum(Titanic$Survived == '1'& Titanic$Fare > y)/ sum(Titanic$Survived == '0'& Titanic$Fare> y)
+```
+#20
+```{r}
+Titanic$sfare <- (Titanic$Fare-mean(Titanic$Fare))/sd(Titanic$Fare)
+```
+#21
+```{r}
+Titanic$cfare <- ifelse(Titanic$Fare > mean(Titanic$Fare),'expensive','cheap')
+names(Titanic)  
+```
+#22
+```{r}
+Titanic$cage <- 0
+Titanic$cage[Titanic$Age>10 & Titanic$Age<20]=1
+Titanic$cage[20<Titanic$Age & Titanic$Age<30]=2
+Titanic$cage[30<Titanic$Age & Titanic$Age<40]=3
+Titanic$cage[40<Titanic$Age & Titanic$Age<50]=4
+Titanic$cage[50<Titanic$Age & Titanic$Age<60]=5
+Titanic$cage[60<Titanic$Age & Titanic$Age<70]=6
+Titanic$cage[70<Titanic$Age & Titanic$Age<80]=7
+
+
+```
+#23
+```{r}
+table(Titanic$Embarked)
+levels(Titanic$Embarked)[ ]=c("S","C","Q","S")
+levels(Titanic$Embarked)
+
+```
+
+
+
+
